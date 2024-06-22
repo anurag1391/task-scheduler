@@ -118,7 +118,7 @@ input[type=texts] {
 }
 
 /* Full-width input fields */
-.form-container input[type=text], .form-container select[id=priority], .form-container input[type=date] {
+.form-container input[type=text], .form-container select[id=priority], .form-container select[id=editStatus], .form-container select[id=editPriority], .form-container input[type=date] {
   width: 90%;
   padding: 15px;
   margin: 4px 0 22px 0;
@@ -127,7 +127,7 @@ input[type=texts] {
 }
 
 /* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=date]:focus, .form-container select[id=priority]:focus {
+.form-container input[type=text]:focus, .form-container input[type=date]:focus, .form-container select[id=priority]:focus,  .form-container select[id=editStatus]:focus, .form-container select[id=editPriority]:focus, {
   background-color: #ddd;
   outline: none;
 }

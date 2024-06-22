@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="index.css">
     <title>Task Scheduler</title>
 </head>
-
 <body>
     <header>
         <h1>Task Scheduler</h1>
@@ -15,43 +13,51 @@
     <main>
         <div>
             <input class="search-field" type="text" id="search" placeholder="Search.."> &nbsp;&nbsp;&nbsp;
-            <button class="create-task" type="button" id="addtasks" onclick="openTask()">Create Task</button>
+            <button class="create-task" type="button" id="addtasks" onclick="openTaskForm()">Create Task</button>
         </div>
-
         <div class="form-popup" id="myForm">
             <form class="form-container">
                 <h1>Add Task</h1>
-
                 <label for="task1"><b>Task</b></label>
                 <input type="text" placeholder="Enter task..." name="task" id="task1" required>
-
                 <label for="priority"><b>Priority</b></label>
                 <select id="priority" type="priority">
                     <option value="top">Top Priority</option>
                     <option value="middle">Middle Priority</option>
                     <option value="low">Less Priority</option>
                 </select>
-
                 <label for="deadline"><b>Due Date</b></label>
                 <input type="date" id="deadline" required>
-
-                <!-- <label for="status"><b>Status</b></label>
-                <select id="status">
+                <button id="add-task" type="button" class="btn">Add Task</button>
+                <button type="button" class="btn cancel" onclick="closeTaskForm()">Close</button>
+            </form>
+        </div>
+        <div class="form-popup" id="editForm">
+            <form class="form-container">
+                <h1>Edit Task</h1>
+                <label for="task1"><b>Task</b></label>
+                <input type="text" placeholder="Enter task..." name="task" id="editTask1" required>
+                <label for="priority"><b>Priority</b></label>
+                <select id="editPriority" type="priority">
+                    <option value="top">Top Priority</option>
+                    <option value="middle">Middle Priority</option>
+                    <option value="low">Less Priority</option>
+                </select>
+                <select class="status" id="editStatus">
                     <option value="in-process">In-process</option>
                     <option value="hold">Hold</option>
                     <option value="complete">Complete</option>
-                </select> -->
-
-                <button id="add-task" type="button" class="btn">Add Task</button>
-                <button type="button" class="btn cancel" onclick="closeTask()">Close</button>
+                  </select>
+                <label for="deadline"><b>Due Date</b></label>
+                <input type="date" id="editDeadline" required>
+                <button id="edit-task" type="button" class="btn">Edit Task</button>
+                <button type="button" class="btn cancel" onclick="closeTaskForm()">Close</button>
             </form>
         </div>
-
-        <div class="task-list" id="task-list" >
+        <div class="task-list" id="task-list">
             <!-- Tasks will be added here dynamically -->
         </div>
     </main>
     <script src="index.js"></script>
 </body>
-
 </html>
