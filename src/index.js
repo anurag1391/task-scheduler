@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // const status = document.getElementById("status").value;
 
         if (task.trim() === "" || deadline === "") {
-            alert("Please add task detail.");
+            alert("Please add task details.");
             return; // Don't add task if task or deadline is empty
         }
         const selectedDate = new Date(deadline);
