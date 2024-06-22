@@ -1,0 +1,179 @@
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+header {
+	background-color: #007bff;
+	color: white;
+	text-align: center;
+	padding: 1rem 0;
+}
+
+main {
+	max-width: 700px;
+	margin: 0 auto;
+	padding: 3rem;
+}
+
+/* .task-form {
+	display: flex;
+	gap: 20px;
+	margin-bottom: 20px;
+} */
+
+.task-list {
+	border: 1px solid #ddd;
+	padding: 10px;
+}
+
+.task {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.task button {
+	background-color: #28a745;
+	color: white;
+	border: none;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.search-field{
+	padding: 10px;
+	border-radius: 5px;
+margin-bottom: 10px;
+	/* width: 700px;
+	height: 32px;
+	box-sizing: border-box; */
+	
+}
+
+input[type=texts] {
+	float:right;
+	width: 60px;
+	-webkit-transition: width 0.4s ease-in-out;
+	transition: width 0.4s ease-in-out;
+  }
+  
+  /* When the input field gets focus, change its width to 100% */
+  input[type=texts]:focus {
+	width: 70%;
+  }
+
+  .container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgb(214, 136, 62);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.create-task{
+	float:right;
+	padding-bottom: px;
+	
+}
+
+
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.create-task{
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+  display:flex;
+  position: fixed;
+  bottom: 0;
+  right: 500px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container select[id=priority], .form-container input[type=date] {
+  width: 90%;
+  padding: 15px;
+  margin: 4px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=date]:focus, .form-container select[id=priority]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+.task-list .task {
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.task-list .task p {
+    margin: 5px 0;
+}
+
+.task.in-process {
+    background-color: #ffffcc; /* Light yellow */
+}
+
+.task.hold {
+    background-color: #ffcccc; /* Light red */
+}
+
+.task.complete {
+    background-color: #ccffcc; /* Light green */
+}
