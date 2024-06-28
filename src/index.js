@@ -5,25 +5,39 @@ document.addEventListener('DOMContentLoaded', function() {
     const addTaskButton = document.getElementById("add-task");
     const taskList = document.getElementById("task-list");
     const searchInput = document.getElementById("search");
-    const formPopup = document.getElementById("myForm");
+    let formPopup = document.getElementById("myForm");
+    const editTaskInput = document.getElementById("edit-task");
+    const editPriorityInput = document.getElementById("edit-priority");
+    const editDeadlineInput = document.getElementById("edit-deadline");
+    const editStatusInput = document.getElementById("edit-Status");
+    const saveTaskButton = document.getElementById("save-task");
+    // let isFormOpen = document.getElementById("myForm");
+    formPopup.style.display = "none";
+    document.getElementById('editForm').style.display = 'none'
     let editIndex = -1; // New variable to keep track of the task being edited
+
     addTaskButton.addEventListener("click", () => {
+        formPopup.style.display = "block";
         const task = taskInput.value;
         const priority = priorityInput.value;
         const deadline = deadlineInput.value;
+
         if (task.trim() === "" || deadline === "") {
             alert("Please add task details.");
             return; // Don't add task if task or deadline is empty
         }
+
         const selectedDate = new Date(deadline);
         const currentDate = new Date();
         if (selectedDate <= currentDate) {
             alert("Please select an upcoming date for the deadline.");
             return; // Don't add task if deadline is not in the future
         }
+
         if (editIndex > -1) {
             // Update existing task
-            updateTaskInLocalStorage(editIndex, task, priority, deadline, 'in-process');
+            const status = editStatusInput.value;
+            updateTaskInLocalStorage(editIndex, task, priority, deadline, status);
             editIndex = -1; // Reset editIndex
         } else {
             // Add new task
@@ -32,13 +46,19 @@ document.addEventListener('DOMContentLoaded', function() {
             // Store the task in local storage
             storeTaskInLocalStorage(task, priority, deadline, 'in-process');
         }
+
         taskInput.value = "";
         priorityInput.value = "top";
         deadlineInput.value = "";
-        formPopup.style.display = "none";
         displayStoredData(); // Refresh the task list
+
+        clearInputs();
+         closeTaskForm()
+      
     });
+
     searchInput.addEventListener("input", searchList);
+
     function searchList() {
         let input = searchInput.value.toLowerCase();
         let tasks = document.querySelectorAll('.task');
@@ -54,32 +74,42 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
     function createTaskElement(task, priority, deadline, status, index) {
         const taskItem = document.createElement("div");
         taskItem.classList.add("task");
         taskItem.innerHTML = `
-            <p class="task-name">${task}</p>
+            <p class="task-name">Task: ${task}</p>
             <p>Priority: ${priority}</p>
             <p>Deadline: ${deadline}</p>
-            <select class="status" id="status">
+            <select class="status">
               <option value="in-process" ${status === 'in-process' ? 'selected' : ''}>In-process</option>
               <option value="hold" ${status === 'hold' ? 'selected' : ''}>Hold</option>
               <option value="complete" ${status === 'complete' ? 'selected' : ''}>Complete</option>
             </select>
-            <button class="delete-task">Delete</button>
-            <button class="edit-task" onclick='EditTaskForm(${index})'>Edit</button>`;
+            <button class="edit-task">Edit</button>
+            <button class="delete-task">Delete</button>`;
+
         const statusDropdown = taskItem.querySelector('.status');
         statusDropdown.addEventListener('change', function() {
             taskItem.className = 'task'; // Reset class
             taskItem.classList.add(statusDropdown.value);
             updateTaskInLocalStorage(index, task, priority, deadline, statusDropdown.value);
         });
+
+        const editButton = taskItem.querySelector('.edit-task');
+        editButton.addEventListener('click', function() {
+            openEditForm(index, task, priority, deadline, statusDropdown.value);
+        });
+
         const deleteButton = taskItem.querySelector('.delete-task');
         deleteButton.addEventListener('click', function() {
             deleteTask(taskItem, index);
         });
+
         return taskItem;
     }
+
     function storeTaskInLocalStorage(task, priority, deadline, status) {
         const taskData = {
             task: task,
@@ -99,6 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Store the updated tasks array in local storage
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }
+
     function updateTaskInLocalStorage(index, task, priority, deadline, status) {
         let tasks = localStorage.getItem('tasks');
         if (tasks) {
@@ -113,6 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
+
     function deleteTask(taskItem, index) {
         taskItem.remove();
         let tasks = localStorage.getItem('tasks');
@@ -123,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
             displayStoredData(); // Refresh the task list
         }
     }
+
     function displayStoredData() {
         taskList.innerHTML = ''; // Clear the existing list
         const storedTasks = localStorage.getItem('tasks');
@@ -136,47 +169,73 @@ document.addEventListener('DOMContentLoaded', function() {
             taskList.innerHTML = '<p>No tasks stored.</p>';
         }
     }
+
+    function openEditForm(index, task, priority, deadline, status) {
+        editTaskInput.value = task;
+        editPriorityInput.value = priority;
+        editDeadlineInput.value = deadline;
+        editStatusInput.value = status;
+        editIndex = index;
+        formPopup.style.display = "block";
+        isFormOpen = true;
+    }
+
+    saveTaskButton.addEventListener('click', () => {
+        const task = editTaskInput.value;
+        const priority = editPriorityInput.value;
+        const deadline = editDeadlineInput.value;
+        const status = editStatusInput.value;
+
+        if (task.trim() === "" || deadline === "") {
+            alert("Please add task details.");
+            return; // Don't save task if task or deadline is empty
+        }
+
+        const selectedDate = new Date(deadline);
+        const currentDate = new Date();
+        if (selectedDate <= currentDate) {
+            alert("Please select an upcoming date for the deadline.");
+            return; // Don't save task if deadline is not in the future
+        }
+
+        updateTaskInLocalStorage(editIndex, task, priority, deadline, status);
+        editIndex = -1; // Reset editIndex
+        formPopup.style.display = "none";
+        displayStoredData(); // Refresh the task list
+        isFormOpen = false;
+        closeTaskForms();
+    });
+
+    // closeFormButton.addEventListener('click', closeTaskForm);
+
     // Close the form popup when the ESC key is pressed
     document.addEventListener('keydown', function(event) {
         if (event.key === "Escape" || event.key === "Esc") {
             closeTaskForm();
         }
     });
+
     // Display stored data on page load
     displayStoredData();
 });
+
 function openTaskForm() {
     document.getElementById("myForm").style.display = "block";
+    isFormOpen = true;
 }
-function EditTaskForm(index) {
-    document.getElementById("editForm").style.display = "block";
-    openTaskForm1(index);
-}
-function openTaskForm1(index) {
-    if (typeof index === 'number') {
-        const storedTasks = JSON.parse(localStorage.getItem('tasks'));
-        if (storedTasks && storedTasks[index]) {
-            const taskData = storedTasks[index];
-            document.getElementById("editTask1").value = taskData.task;
-            document.getElementById("editPriority").value = taskData.priority;
-            document.getElementById("editDeadline").value = formatDate(taskData.deadline);
-            document.getElementById("editStatus").value = taskData.status;
-            editIndex = index; // Set editIndex to the current task index
-            document.getElementById("editForm").style.display = "block";
-        }
-    } else {
-        document.getElementById("editForm").style.display = "block";
-    }
-}
-// Function to format the date to yyyy-MM-dd
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
+
 function closeTaskForm() {
     document.getElementById("myForm").style.display = "none";
+    isFormOpen = false;
+}
+
+function closeTaskForms() {
     document.getElementById("editForm").style.display = "none";
+    isFormOpen = false;
+}
+function clearInputs() {
+    // Clear input fields
+    document.getElementById("task1").value = "";
+    document.getElementById("priority").value = "";
+    document.getElementById("deadline").value = "";
 }
